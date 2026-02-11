@@ -1,0 +1,55 @@
+{
+  "manifest_version": 2,
+  "name": "Auto Reject Cookies",
+  "version": "1.5.0",
+  "description": "Automatically rejects cookie consent banners and sends Global Privacy Control signal",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "auto-reject-cookies@example.com",
+      "strict_min_version": "91.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "113.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "icons": {
+    "48": "icons/Store Logo.png",
+    "96": "icons/Store Logo.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["gpc-inject.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_icon": "icons/Store Logo.png",
+    "default_title": "Auto Reject Cookies",
+    "default_popup": "popup.html"
+  }
+}

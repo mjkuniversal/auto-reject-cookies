@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Auto Reject Cookies</h1>
+
+    <div class="setting">
+      <label class="toggle">
+        <input type="checkbox" id="enabledToggle">
+        <span class="slider"></span>
+      </label>
+      <span class="label">Extension enabled</span>
+    </div>
+
+    <div class="setting">
+      <button id="whitelistBtn" class="btn">
+        <span id="whitelistText">Whitelist this site</span>
+      </button>
+    </div>
+
+    <div class="stats">
+      <span id="statsText">Cookies rejected: 0</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+Version 1.5.0 - Shopify Support, Scroll Fix & Domain Tracking
+
+New Features:
+- Added support for Shopify's native cookie consent banner (used by goodr.com and many other Shopify stores)
+- Added domain-level tracking: once cookies are rejected on a domain, the extension skips re-processing for 1 hour, preventing repeated banner interactions on sites like gamestop.com
+
+Bug Fixes:
+- Fixed page scrolling to bottom after cookie banner dismissal — scroll position is now preserved before and after clicking reject buttons
+
+Technical Changes:
+- Added Shopify CMP entry with selectors: #shopify-pc__banner__btn-decline, .shopify-pc__banner__btn-decline, #shopify-pc__prefs__header-decline
+- tryClick() now saves and restores window scroll position around element.click()
+- Handled domains stored in browser.storage.local with automatic expiry and cleanup
+- Domain normalization strips www. prefix so www.example.com and example.com are treated as the same site
+
+---
+
+Notes to Reviewer:
+
+No account required for testing.
+
+To test Shopify cookie banner support:
+1. Clear cookies for goodr.com or use a private window
+2. Visit https://goodr.com (banner appears for EU/CA visitors)
+3. The extension should automatically click the "Decline" button on the Shopify banner
+
+To test scroll position fix:
+1. Visit any site with a cookie banner
+2. Scroll partway down the page, then reload
+3. When the banner is dismissed, the page should NOT jump to the bottom
+
+To test domain tracking:
+1. Visit a site with a cookie banner (e.g., any OneTrust site)
+2. The extension rejects the banner on the first page
+3. Navigate to other pages on the same site — the extension skips processing (check console for "[Auto Reject Cookies] Skipping - domain already handled recently" with DEBUG=true)
+
+The extension requires no external services or accounts - it operates entirely client-side by detecting and clicking cookie consent UI elements.
