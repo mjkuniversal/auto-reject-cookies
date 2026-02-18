@@ -11,7 +11,7 @@
 
 # Extension name and version (update version here when releasing)
 NAME="auto_reject_cookies"
-VERSION="1.6.0"
+VERSION="1.7.0"
 
 # Files to include in the package
 FILES=(

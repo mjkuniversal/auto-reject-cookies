@@ -1,18 +1,32 @@
-Version 1.6.0 - TeamGroup Support
+Version 1.7.0 - InMobi/Quantcast CMP Fix & TeamGroup Support
 
 New Features:
+- Improved Quantcast/InMobi Choice CMP handling — adds options-view "Confirm" button selector and desktop variant support (fixes 1001fonts.com and similar sites)
 - Added custom handler for TeamGroup (teamgroupinc.com) cookie consent banner, which has no "Reject All" button
 
+Bug Fixes:
+- Fixed Quantcast/InMobi settings button selector using mode="secondary" instead of :first-child to avoid accidentally clicking "Agree"
+- Made "to" optional in "object to all" reject pattern to also match "OBJECT ALL"
+- Hardened TeamGroup domain check to use exact match instead of substring match
+- Prevented anchor scroll on TeamGroup confirm button click
+
 Technical Changes:
-- Added TeamGroup entry to KNOWN_CMPS array with custom handler
-- Custom handler unchecks #cookie_functional and #cookie_marketing checkboxes, then clicks the "Confirm" button (a.privacyTrigger.acceptCustom) to save with only necessary cookies
-- Dispatches change events on checkboxes for jQuery listener compatibility
+- Added '.qc-cmp2-buttons-desktop button[mode="secondary"]' selector for Quantcast desktop variant
+- Added '.qc-cmp2-footer button[mode="primary"]' selector for Confirm button in Quantcast/InMobi options view
+- Added TeamGroup entry to KNOWN_CMPS array with custom handler that unchecks #cookie_functional and #cookie_marketing, then clicks a.privacyTrigger.acceptCustom
+- Updated KNOWN_CMP_SETTINGS_SELECTORS to use mode="secondary" for Quantcast
 
 ---
 
 Notes to Reviewer:
 
 No account required for testing.
+
+To test InMobi/Quantcast CMP fix:
+1. Clear cookies for 1001fonts.com or use a private window
+2. Visit https://www.1001fonts.com
+3. The extension should handle the InMobi Choice cookie banner (click "More Options" then "Confirm")
+4. With DEBUG=true in content.js, console shows Quantcast/InMobi Choice selector matches
 
 To test TeamGroup cookie banner support:
 1. Clear cookies for teamgroupinc.com or use a private window
