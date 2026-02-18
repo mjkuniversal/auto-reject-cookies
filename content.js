@@ -117,11 +117,13 @@
       ]
     },
     {
-      name: 'Quantcast',
+      name: 'Quantcast / InMobi Choice',
       selectors: [
         '.qc-cmp2-summary-buttons button[mode="secondary"]',
         'button.qc-cmp2-button[mode="secondary"]',
-        '[class*="qc-cmp"] button:not([mode="primary"])'
+        '.qc-cmp2-buttons-desktop button[mode="secondary"]',
+        '[class*="qc-cmp"] button:not([mode="primary"])',
+        '.qc-cmp2-footer button[mode="primary"]'  // "Confirm" in options view
       ]
     },
     {
@@ -274,6 +276,11 @@
       name: 'GitHub',
       // GitHub uses radio buttons - handled by custom handler below
       selectors: []
+    },
+    {
+      name: 'TeamGroup',
+      // TeamGroup uses checkboxes + confirm - handled by custom handler below
+      selectors: []
     }
   ];
 
@@ -360,6 +367,54 @@
       }
 
       return false;
+    },
+
+    // TeamGroup uses checkboxes for functional/marketing cookies + a "Confirm" button
+    // No "Reject All" button exists - must uncheck optional cookies and confirm
+    'TeamGroup': function() {
+      const hostname = window.location.hostname;
+      if (hostname !== 'teamgroupinc.com' && hostname !== 'www.teamgroupinc.com' && !hostname.endsWith('.teamgroupinc.com')) {
+        return false;
+      }
+
+      // Check if the privacy module exists
+      const privacyModule = document.querySelector('#modulePrivacy');
+      if (!privacyModule) return false;
+
+      log('TeamGroup: Found #modulePrivacy');
+
+      // Uncheck functional and marketing cookie checkboxes
+      const checkboxIds = ['cookie_functional', 'cookie_marketing'];
+      for (const id of checkboxIds) {
+        const checkbox = document.querySelector('#' + id);
+        if (checkbox && checkbox.checked) {
+          checkbox.checked = false;
+          // Trigger change event for any JS listeners
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          log('TeamGroup: Unchecked #' + id);
+        }
+      }
+
+      // Click the "Confirm" button to save with only necessary cookies
+      const confirmBtn = document.querySelector('a.privacyTrigger.acceptCustom');
+      if (confirmBtn && !confirmBtn.hasAttribute(HANDLED_ATTR)) {
+        confirmBtn.setAttribute(HANDLED_ATTR, 'true');
+        // Prevent scroll from anchor href
+        if (confirmBtn.hasAttribute('href')) {
+          confirmBtn.removeAttribute('href');
+        }
+        confirmBtn.click();
+        console.log('[Auto Reject Cookies] Rejected via TeamGroup (unchecked optional + confirm)');
+
+        // Notify background script
+        try {
+          browser.runtime.sendMessage({ type: 'cookieRejected', url: window.location.href });
+        } catch (e) {}
+
+        return true;
+      }
+
+      return false;
     }
   };
 
@@ -382,7 +437,7 @@
     /^save\s+and\s+(exit|close)$/i,
     /^confirm\s+(my\s+)?choices$/i,
     /^reject\s+and\s+(close|subscribe)$/i,
-    /^object\s+to\s+all$/i,
+    /^object\s+(to\s+)?all$/i,
     /^deny\s+all$/i,
     /^refuse\s+all$/i,
     /^reject\s+all\s+and\s+close$/i,
@@ -462,7 +517,7 @@
     '#ot-sdk-btn',                         // OneTrust alternative
     '.ot-sdk-show-settings',
     '#CybotCookiebotDialogBodyLevelButtonCustomize', // CookieBot customize
-    '.qc-cmp2-summary-buttons button:first-child',   // Quantcast "More Options"
+    '.qc-cmp2-summary-buttons button[mode="secondary"]', // Quantcast/InMobi "More Options"
     '#didomi-notice-learn-more-button',    // Didomi "Learn more"
     '.sp_choice_type_11',                  // Sourcepoint "Options"
     '.sp_choice_type_12'                   // Sourcepoint "Manage"

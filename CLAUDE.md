@@ -246,3 +246,13 @@ cp -r icons /home/mk/projects/test-auto-reject-cookies/
 
 # Load in Firefox via about:debugging
 ```
+
+## Hive Teams
+
+Agents from [Hive](~/projects/tools/hive) are installed globally at `~/.claude/agents/`. Use these teams for complex tasks:
+
+| Team | Lead | Use For |
+|------|------|---------|
+| Extensions | extension-lead | CMP handler development, DOM selectors, Manifest V2 architecture |
+| QA & Security | qa-lead | Cross-site testing, GPC verification, AMO submission compliance |
+| Research | research-lead | Identifying new CMPs, analyzing cookie banner patterns across sites |

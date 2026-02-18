@@ -45,7 +45,7 @@ The extension requires no external services or accounts - it operates entirely c
 
 ### 3. Run Package Script
 ```bash
-cd /home/mk/projects/auto_reject_cookies
+cd /home/mk/projects/extensions/auto-reject-cookies
 ./package.sh
 ```
 
