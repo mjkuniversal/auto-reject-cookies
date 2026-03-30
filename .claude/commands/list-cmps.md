@@ -7,7 +7,7 @@ Show all currently supported Consent Management Platforms.
 
 ## Instructions
 
-1. Read `content.js`
+1. Read `firefox/content.js`
 
 2. Parse the `KNOWN_CMPS` array and extract all CMP names
 

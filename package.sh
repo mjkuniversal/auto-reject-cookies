@@ -11,9 +11,12 @@
 
 # Extension name and version (update version here when releasing)
 NAME="auto_reject_cookies"
-VERSION="1.7.0"
+VERSION="1.7.2"
 
-# Files to include in the package
+# Firefox source directory
+SRCDIR="firefox"
+
+# Files to include in the package (relative to SRCDIR)
 FILES=(
   "manifest.json"
   "background.js"
@@ -33,9 +36,11 @@ OUTPUT="${NAME}-${VERSION}.zip"
 # Remove old package if exists
 rm -f "$OUTPUT"
 
-# Create the zip file (preserving directory structure)
+# Create the zip file from the firefox/ directory (flat structure for AMO)
 echo "Creating $OUTPUT..."
-zip "$OUTPUT" "${FILES[@]}"
+cd "$SRCDIR"
+zip "../$OUTPUT" "${FILES[@]}"
+cd ..
 
 # Verify
 echo ""

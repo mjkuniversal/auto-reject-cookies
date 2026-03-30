@@ -1,20 +1,13 @@
-Version 1.7.0 - InMobi/Quantcast CMP Fix & TeamGroup Support
-
-New Features:
-- Improved Quantcast/InMobi Choice CMP handling — adds options-view "Confirm" button selector and desktop variant support (fixes 1001fonts.com and similar sites)
-- Added custom handler for TeamGroup (teamgroupinc.com) cookie consent banner, which has no "Reject All" button
+Version 1.7.2 / Chrome 4.2 - Save Preferences Fix + Project Restructure
 
 Bug Fixes:
-- Fixed Quantcast/InMobi settings button selector using mode="secondary" instead of :first-child to avoid accidentally clicking "Agree"
-- Made "to" optional in "object to all" reject pattern to also match "OBJECT ALL"
-- Hardened TeamGroup domain check to use exact match instead of substring match
-- Prevented anchor scroll on TeamGroup confirm button click
+- Fixed "Save my preferences" buttons not being clicked on sites like rxhistories.com
+- The regex pattern only matched "Save preferences" but not "Save my preferences" (missing optional "my" word)
 
 Technical Changes:
-- Added '.qc-cmp2-buttons-desktop button[mode="secondary"]' selector for Quantcast desktop variant
-- Added '.qc-cmp2-footer button[mode="primary"]' selector for Confirm button in Quantcast/InMobi options view
-- Added TeamGroup entry to KNOWN_CMPS array with custom handler that unchecks #cookie_functional and #cookie_marketing, then clicks a.privacyTrigger.acceptCustom
-- Updated KNOWN_CMP_SETTINGS_SELECTORS to use mode="secondary" for Quantcast
+- Updated REJECT_PATTERNS regex: /^save\s+(settings|preferences)$/i → /^save\s+(my\s+)?(settings|preferences)$/i
+- Moved Firefox extension files into firefox/ subdirectory (mirrors chrome/ structure)
+- Updated package.sh, auto-package hook, and all command references for new directory layout
 
 ---
 
@@ -22,16 +15,9 @@ Notes to Reviewer:
 
 No account required for testing.
 
-To test InMobi/Quantcast CMP fix:
-1. Clear cookies for 1001fonts.com or use a private window
-2. Visit https://www.1001fonts.com
-3. The extension should handle the InMobi Choice cookie banner (click "More Options" then "Confirm")
-4. With DEBUG=true in content.js, console shows Quantcast/InMobi Choice selector matches
-
-To test TeamGroup cookie banner support:
-1. Clear cookies for teamgroupinc.com or use a private window
-2. Visit https://www.teamgroupinc.com
-3. The extension should automatically uncheck functional/marketing cookie checkboxes and click "Confirm"
-4. With DEBUG=true in content.js, console shows "[Auto Reject Cookies] Rejected via TeamGroup (unchecked optional + confirm)"
+To test "Save my preferences" fix:
+1. Visit a site with a cookie banner that uses a "Save my preferences" button
+2. The extension should now automatically click the button when it appears in a consent context
+3. With DEBUG=true in firefox/content.js, console shows pattern match
 
 The extension requires no external services or accounts - it operates entirely client-side by detecting and clicking cookie consent UI elements.

@@ -40,6 +40,7 @@
       selectors: [
         '#CybotCookiebotDialogBodyButtonDecline',
         '#CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll',
+        '#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowallSelection',
         'a[id*="CybotCookiebotDialog"][id*="Decline"]'
       ]
     },
@@ -214,7 +215,7 @@
     /^deny\s+all$/i,
     /^refuse\s+all$/i,
     /^reject\s+all\s+and\s+close$/i,
-    /^save\s+(settings|preferences)$/i,
+    /^save\s+(my\s+)?(settings|preferences)$/i,
     /^save\s+my\s+choices$/i,
     /^save\s+&\s+exit$/i,
     /^legitimate\s+interest\s+only$/i,
@@ -677,6 +678,8 @@
     // Later runs: allow settings clicks (page should be loaded by now)
     runWithDelay(1500, true);
     runWithDelay(3000, true);
+    // Late run: catch async CMPs like CookieBot that need 2 network requests before rendering
+    runWithDelay(5000, true);
 
     // Observe for dynamically added banners
     if (document.body) {

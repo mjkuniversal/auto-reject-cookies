@@ -14,8 +14,8 @@ mkdir -p /home/mk/projects/test-auto-reject-cookies
 
 ### 2. Copy Extension Files
 ```bash
-cp /home/mk/projects/extensions/auto-reject-cookies/{content.js,background.js,gpc-inject.js,manifest.json,popup.html,popup.js,popup.css} /home/mk/projects/test-auto-reject-cookies/
-cp -r /home/mk/projects/extensions/auto-reject-cookies/icons /home/mk/projects/test-auto-reject-cookies/
+cp /home/mk/projects/extensions/auto-reject-cookies/firefox/{content.js,background.js,gpc-inject.js,manifest.json,popup.html,popup.js,popup.css} /home/mk/projects/test-auto-reject-cookies/
+cp -r /home/mk/projects/extensions/auto-reject-cookies/firefox/icons /home/mk/projects/test-auto-reject-cookies/
 ```
 
 ### 3. Modify Test manifest.json

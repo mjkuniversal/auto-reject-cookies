@@ -9,7 +9,7 @@ Add support for a new Consent Management Platform (CMP) to the extension.
 
 When the user provides a CMP name and selectors:
 
-1. Read `content.js` and locate the `KNOWN_CMPS` array (around line 17)
+1. Read `firefox/content.js` and locate the `KNOWN_CMPS` array (around line 17)
 
 2. Add a new entry to the array in the format:
 ```javascript

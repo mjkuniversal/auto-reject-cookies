@@ -7,7 +7,7 @@ Enable or disable debug logging in the extension.
 
 ## Instructions
 
-1. Read `content.js` and find the `DEBUG` constant (line 8)
+1. Read `firefox/content.js` and find the `DEBUG` constant (line 10)
 
 2. If user wants debug on:
    - Set `const DEBUG = true;`

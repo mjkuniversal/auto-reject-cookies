@@ -21,11 +21,11 @@ Firefox WebExtension that automatically rejects cookie consent banners and sends
 # In Firefox:
 # 1. Navigate to about:debugging
 # 2. Click "This Firefox" → "Load Temporary Add-on"
-# 3. Select manifest.json
+# 3. Select firefox/manifest.json
 ```
 
 ### Debug Mode
-Set `DEBUG = true` in `content.js` (line 10) to enable console logging. Look for `[Auto Reject Cookies]` messages.
+Set `DEBUG = true` in `firefox/content.js` (line 10) to enable console logging. Look for `[Auto Reject Cookies]` messages.
 
 ### Verifying GPC
 ```javascript
@@ -44,21 +44,29 @@ Sec-GPC: 1
 ## Architecture
 
 ```
-├── manifest.json       # Extension manifest (Manifest V2)
-├── gpc-inject.js       # Runs at document_start, sets navigator.globalPrivacyControl
-├── content.js          # Runs at document_end, detects and clicks reject buttons
-│   ├── KNOWN_CMPS[]              # 25+ CMP-specific selectors
-│   ├── CUSTOM_CMP_HANDLERS{}     # Special handlers for complex CMPs (e.g., GitHub)
-│   ├── REJECT_PATTERNS[]         # Regex patterns for reject button text
-│   ├── SETTINGS_PATTERNS[]       # Patterns for settings/preferences buttons
-│   ├── PRIORITY_PATTERNS[]       # Patterns containing "all" (prioritized)
-│   ├── isInConsentContext()      # Prevents clicking navigation links
-│   └── MutationObserver          # Catches dynamically loaded banners
-├── background.js       # GPC header injection, settings, icon updates
-├── popup.html/js/css   # Toggle UI + whitelist button
-├── icons/              # Default and success state icons
-├── VERSION_NOTES.txt   # Release notes for current version
-└── archive_versions/   # Previous release zip files
+├── firefox/                # Firefox extension (Manifest V2)
+│   ├── manifest.json
+│   ├── content.js          # Detects and clicks reject buttons
+│   │   ├── KNOWN_CMPS[]              # 25+ CMP-specific selectors
+│   │   ├── CUSTOM_CMP_HANDLERS{}     # Special handlers (GitHub, TeamGroup)
+│   │   ├── REJECT_PATTERNS[]         # Regex patterns for reject button text
+│   │   ├── SETTINGS_PATTERNS[]       # Patterns for settings/preferences buttons
+│   │   ├── PRIORITY_PATTERNS[]       # Patterns containing "all" (prioritized)
+│   │   ├── isInConsentContext()      # Prevents clicking navigation links
+│   │   └── MutationObserver          # Catches dynamically loaded banners
+│   ├── background.js       # GPC header injection, settings, icon updates
+│   ├── gpc-inject.js       # Runs at document_start, sets navigator.globalPrivacyControl
+│   ├── popup.html/js/css   # Toggle UI + whitelist button
+│   └── icons/              # Default and success state icons
+├── chrome/                 # Chrome extension (Manifest V3)
+│   ├── manifest.json
+│   ├── content.js, background.js, gpc-inject.js, gpc_rules.json
+│   ├── popup.html/js/css
+│   └── icons/
+├── package.sh              # Firefox packaging script
+├── VERSION_NOTES.txt       # Release notes for current version
+├── releases/               # Built zip files
+└── archive_versions/       # Previous release zip files
 ```
 
 ## Adding Support for New CMPs
@@ -67,7 +75,7 @@ Sec-GPC: 1
 
 For CMPs that use a single reject button:
 
-#### 1. Add to KNOWN_CMPS array (content.js ~line 48)
+#### 1. Add to KNOWN_CMPS array (firefox/content.js ~line 48)
 ```javascript
 {
   name: 'NewCMP',
@@ -79,12 +87,12 @@ For CMPs that use a single reject button:
 }
 ```
 
-#### 2. Add text patterns for reject buttons (content.js ~line 224)
+#### 2. Add text patterns for reject buttons (firefox/content.js ~line 224)
 ```javascript
 /^new\s+reject\s+text$/i,
 ```
 
-#### 3. Add settings button patterns if needed (content.js ~line 287)
+#### 3. Add settings button patterns if needed (firefox/content.js ~line 287)
 ```javascript
 /^open\s+preferences$/i,
 ```
@@ -102,7 +110,7 @@ For CMPs that require special handling (e.g., radio buttons, multi-step processe
 }
 ```
 
-#### 2. Add handler to CUSTOM_CMP_HANDLERS (content.js ~line 227)
+#### 2. Add handler to CUSTOM_CMP_HANDLERS (firefox/content.js ~line 227)
 ```javascript
 const CUSTOM_CMP_HANDLERS = {
   'CustomCMP': function() {
@@ -233,8 +241,8 @@ To test changes without affecting your production extension:
 ```bash
 # Create test extension directory
 mkdir -p /home/mk/projects/test-auto-reject-cookies
-cp content.js background.js gpc-inject.js manifest.json popup.* /home/mk/projects/test-auto-reject-cookies/
-cp -r icons /home/mk/projects/test-auto-reject-cookies/
+cp firefox/{content.js,background.js,gpc-inject.js,manifest.json,popup.html,popup.js,popup.css} /home/mk/projects/test-auto-reject-cookies/
+cp -r firefox/icons /home/mk/projects/test-auto-reject-cookies/
 
 # Edit test manifest.json:
 # - Change name to "[TEST] Auto Reject Cookies"
