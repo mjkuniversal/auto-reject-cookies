@@ -182,10 +182,7 @@ Mozilla requires all new extensions to declare data collection practices:
     }
   },
   "gecko_android": {
-    "strict_min_version": "113.0",
-    "data_collection_permissions": {
-      "required": ["none"]
-    }
+    "strict_min_version": "113.0"
   }
 }
 ```
