@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Purpose
 
-Firefox WebExtension that automatically rejects cookie consent banners and sends Global Privacy Control (GPC) signals. Supports 26+ known CMPs (Consent Management Platforms), generic pattern matching in 10+ languages, and two-step rejection for hidden options.
+Firefox WebExtension that automatically rejects cookie consent banners and sends Global Privacy Control (GPC) signals. Supports 27+ known CMPs (Consent Management Platforms), generic pattern matching in 10+ languages, and two-step rejection for hidden options.
 
 ## Key Features
 

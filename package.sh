@@ -11,7 +11,7 @@
 
 # Extension name and version (update version here when releasing)
 NAME="auto_reject_cookies"
-VERSION="1.7.2"
+VERSION="1.7.3"
 
 # Firefox source directory
 SRCDIR="firefox"

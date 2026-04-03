@@ -5,7 +5,7 @@ A Firefox extension that automatically rejects cookie consent banners and sends 
 ## Features
 
 ### Automatic Cookie Banner Rejection
-- **26+ Consent Management Platforms (CMPs)** supported including OneTrust, CookieBot, Sourcepoint, Quantcast, Didomi, Shopify, and more
+- **27+ Consent Management Platforms (CMPs)** supported including OneTrust, CookieBot, Sourcepoint, Quantcast, Didomi, Shopify, and more
 - **Multi-language support** for reject buttons in English, German, French, Spanish, Italian, Dutch, Portuguese, Polish, Swedish, Norwegian, and Danish
 - **Two-step rejection** for sites that hide the reject option behind a "Settings" or "Preferences" button
 - **Smart prioritization** - always clicks "Reject All" over individual category rejections

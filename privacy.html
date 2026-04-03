@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Auto Reject Cookies</title>
+    <link rel="stylesheet" href="landing.css">
+    <style>
+        .policy-page { max-width: 760px; margin: 0 auto; padding: 60px 24px 80px; }
+        .policy-back { display: inline-flex; align-items: center; gap: 6px; color: var(--color-text-muted); font-size: 14px; text-decoration: none; margin-bottom: 40px; }
+        .policy-back:hover { color: var(--color-text); }
+        .policy-back svg { width: 16px; height: 16px; }
+        .policy-page h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+        .policy-meta { color: var(--color-text-muted); font-size: 14px; margin-bottom: 48px; }
+        .policy-page h2 { font-size: 20px; font-weight: 600; margin: 40px 0 12px; color: var(--color-text); }
+        .policy-page p { color: var(--color-text-muted); line-height: 1.75; margin-bottom: 16px; }
+        .policy-page ul { color: var(--color-text-muted); line-height: 1.75; margin: 0 0 16px 20px; }
+        .policy-page li { margin-bottom: 6px; }
+        .no-collect { background: #0d2818; border: 1px solid #166534; border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; }
+        .no-collect strong { color: #4ade80; font-size: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th { text-align: left; padding: 10px 14px; background: var(--color-bg-tertiary); color: var(--color-text); font-size: 13px; font-weight: 600; }
+        td { padding: 10px 14px; border-top: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 14px; }
+        code { background: var(--color-bg-tertiary); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; color: var(--color-primary-hover); }
+    </style>
+</head>
+<body>
+    <div style="background: var(--color-bg); min-height: 100vh;">
+        <div class="policy-page">
+            <a href="index.html" class="policy-back">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Back to home
+            </a>
+
+            <h1>Privacy Policy</h1>
+            <p class="policy-meta">Auto Reject Cookies &mdash; Last updated: April 2026</p>
+
+            <div class="no-collect">
+                <strong>&#10003; We do not collect any data.</strong>
+                <p style="margin: 6px 0 0; color: #86efac; font-size: 14px;">This extension operates entirely within your browser. Nothing leaves your device.</p>
+            </div>
+
+            <h2>Data Collection</h2>
+            <p>Auto Reject Cookies does not collect, transmit, or share any personal data. Specifically, this extension:</p>
+            <ul>
+                <li>Does <strong>not</strong> collect personal information</li>
+                <li>Does <strong>not</strong> track your browsing history</li>
+                <li>Does <strong>not</strong> send any data to external servers</li>
+                <li>Does <strong>not</strong> use analytics or telemetry</li>
+                <li>Does <strong>not</strong> contain advertisements</li>
+                <li>Makes <strong>no</strong> external network requests</li>
+            </ul>
+
+            <h2>Local Storage</h2>
+            <p>The extension stores the following data <strong>locally in your browser only</strong>:</p>
+            <table>
+                <tr><th>Data</th><th>Purpose</th></tr>
+                <tr><td>Enabled state</td><td>Remember if you have turned the extension on or off</td></tr>
+                <tr><td>Whitelist</td><td>Sites where you have disabled automatic rejection</td></tr>
+                <tr><td>Rejection count</td><td>Simple counter of banners rejected (shown in popup statistics)</td></tr>
+                <tr><td>Handled domains</td><td>Domains recently processed (auto-expires after 1 hour)</td></tr>
+            </table>
+            <p>This data never leaves your browser, is not synced to any cloud service, and is deleted when you uninstall the extension.</p>
+
+            <h2>Permissions</h2>
+
+            <p><code>&lt;all_urls&gt;</code> — Required to detect and reject cookie banners on any website. The extension only reads the page to find consent buttons. It does not read, store, or transmit page content.</p>
+
+            <p><code>declarativeNetRequest</code> — Used solely to add the <code>Sec-GPC: 1</code> header to your outgoing requests. This implements the Global Privacy Control standard. No request data is read, logged, or transmitted.</p>
+
+            <p><code>storage</code> — Saves your preferences (enabled state, whitelist) locally in your browser.</p>
+
+            <p><code>tabs</code> and <code>activeTab</code> — Updates the toolbar icon when cookies are rejected and shows whitelist status for the current tab.</p>
+
+            <h2>Global Privacy Control</h2>
+            <p>The extension sends a Global Privacy Control (GPC) signal with every request. This is a standardized privacy signal that tells websites you do not consent to having your personal data sold or shared. Under laws like CCPA, businesses are required to honor this signal. See <a href="https://globalprivacycontrol.org/" style="color: var(--color-primary-hover);">globalprivacycontrol.org</a> for more information.</p>
+
+            <h2>Third-Party Services</h2>
+            <p>This extension does not use any third-party services, APIs, or analytics platforms.</p>
+
+            <h2>Open Source</h2>
+            <p>This extension is open source under the MIT License. You can review the complete source code at <a href="https://github.com/mjkuniversal/auto-reject-cookies" style="color: var(--color-primary-hover);">github.com/mjkuniversal/auto-reject-cookies</a> to verify these privacy claims.</p>
+
+            <h2>Contact</h2>
+            <p>For privacy questions or concerns, please open an issue on the <a href="https://github.com/mjkuniversal/auto-reject-cookies/issues" style="color: var(--color-primary-hover);">project repository</a>.</p>
+
+            <h2>Changes to This Policy</h2>
+            <p>Any changes to this privacy policy will be documented in the extension's changelog and repository commit history.</p>
+        </div>
+    </div>
+</body>
+</html>

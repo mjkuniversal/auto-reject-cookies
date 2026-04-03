@@ -1,13 +1,9 @@
-Version 1.7.2 / Chrome 4.2 - Save Preferences Fix + Project Restructure
+Version 1.7.3 / Chrome 4.3 - mymdnow.com Support
 
-Bug Fixes:
-- Fixed "Save my preferences" buttons not being clicked on sites like rxhistories.com
-- The regex pattern only matched "Save preferences" but not "Save my preferences" (missing optional "my" word)
-
-Technical Changes:
-- Updated REJECT_PATTERNS regex: /^save\s+(settings|preferences)$/i → /^save\s+(my\s+)?(settings|preferences)$/i
-- Moved Firefox extension files into firefox/ subdirectory (mirrors chrome/ structure)
-- Updated package.sh, auto-package hook, and all command references for new directory layout
+New CMP Support:
+- Added mymdnow.com cookie consent handler
+- Site uses toggle checkboxes (no "Reject All" button) — extension unchecks optional cookie categories and clicks "Save Changes"
+- Also added CUSTOM_CMP_HANDLERS infrastructure to Chrome build (was Firefox-only)
 
 ---
 
@@ -15,9 +11,9 @@ Notes to Reviewer:
 
 No account required for testing.
 
-To test "Save my preferences" fix:
-1. Visit a site with a cookie banner that uses a "Save my preferences" button
-2. The extension should now automatically click the button when it appears in a consent context
-3. With DEBUG=true in firefox/content.js, console shows pattern match
+To test mymdnow.com support:
+1. Visit mymdnow.com
+2. The extension should detect the cookie consent dialog, uncheck non-essential toggles, and click "Save Changes"
+3. With DEBUG=true in firefox/content.js, console shows "MyMDNow: Unchecked toggle:" messages followed by "Rejected via MyMDNow"
 
 The extension requires no external services or accounts - it operates entirely client-side by detecting and clicking cookie consent UI elements.

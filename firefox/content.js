@@ -282,6 +282,11 @@
       name: 'TeamGroup',
       // TeamGroup uses checkboxes + confirm - handled by custom handler below
       selectors: []
+    },
+    {
+      name: 'MyMDNow',
+      // mymdnow.com uses toggle checkboxes + Save Changes - handled by custom handler below
+      selectors: []
     }
   ];
 
@@ -416,6 +421,69 @@
       }
 
       return false;
+    },
+
+    // mymdnow.com uses toggle checkboxes + "Save Changes" button
+    // No "Reject All" button - must uncheck optional categories then save
+    'MyMDNow': function() {
+      const hostname = window.location.hostname;
+      if (hostname !== 'mymdnow.com' && hostname !== 'www.mymdnow.com' && !hostname.endsWith('.mymdnow.com')) {
+        return false;
+      }
+
+      // Find checkboxes in a consent context
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      if (checkboxes.length === 0) return false;
+
+      let foundConsent = false;
+      for (const checkbox of checkboxes) {
+        if (!isInConsentContext(checkbox)) continue;
+        foundConsent = true;
+        if (checkbox.disabled) continue;
+
+        // Skip strictly necessary cookies
+        const id = checkbox.id;
+        const label = (id && document.querySelector(`label[for="${id}"]`)) || checkbox.closest('label');
+        const text = (label?.textContent || checkbox.name || checkbox.getAttribute('aria-label') || '').toLowerCase();
+        if (/necessary|required|essential|strictly/i.test(text)) continue;
+
+        if (checkbox.checked) {
+          checkbox.checked = false;
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          log('MyMDNow: Unchecked toggle:', checkbox.id || checkbox.name);
+        }
+      }
+
+      if (!foundConsent) return false;
+
+      // Poll for "Save Changes" button
+      let attempts = 0;
+      const maxAttempts = 20;
+
+      const trySaveButton = () => {
+        attempts++;
+        const buttons = document.querySelectorAll('button');
+        for (const btn of buttons) {
+          const text = (btn.textContent || '').trim();
+          if (/^save\s+changes$/i.test(text) && !btn.disabled && !btn.hasAttribute(HANDLED_ATTR)) {
+            btn.setAttribute(HANDLED_ATTR, 'true');
+            btn.click();
+            console.log('[Auto Reject Cookies] Rejected via MyMDNow (unchecked toggles + save changes)');
+            try {
+              browser.runtime.sendMessage({ type: 'cookieRejected', url: window.location.href });
+            } catch (e) {}
+            return;
+          }
+        }
+        if (attempts < maxAttempts) {
+          setTimeout(trySaveButton, 100);
+        } else {
+          log('MyMDNow: Save Changes button not found after', maxAttempts, 'attempts');
+        }
+      };
+
+      setTimeout(trySaveButton, 100);
+      return true;
     }
   };
 
