@@ -65,7 +65,7 @@ A Firefox extension that automatically rejects cookie consent banners and sends 
 ## Installation
 
 ### From Firefox Add-ons (Recommended)
-Visit the [Firefox Add-ons page](#) and click "Add to Firefox".
+Visit the [Firefox Add-ons page](https://addons.mozilla.org/firefox/addon/auto-reject-cookies/) and click "Add to Firefox".
 
 ### Manual Installation (Development)
 1. Clone or download this repository
